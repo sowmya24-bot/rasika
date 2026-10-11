@@ -1,13 +1,13 @@
-const SUPABASE_URL =
-    "https://piutbtmxswsvbdmviaxa.supabase.co";
-
-const SUPABASE_KEY =
-    "sb_publishable_Rti6JVq-fdcBrbgJMVzk8A_tI4pe8ta";
+console.log("RASIKA JS LOADED");
 
 
-/* =========================================
-   SUPABASE CONNECTION
-========================================= */
+// =====================================================
+// SUPABASE CONFIGURATION
+// =====================================================
+
+const SUPABASE_URL = "https://piutbtmxswsvbdmviaxa.supabase.co";
+
+const SUPABASE_KEY = "sb_publishable_Rti6JVq-fdcBrbgJMVzk8A_tI4pe8ta";
 
 const supabaseClient =
     window.supabase.createClient(
@@ -16,367 +16,270 @@ const supabaseClient =
     );
 
 
-console.log("RASIKA JS LOADED");
+// =====================================================
+// JOIN / REGISTRATION
+// =====================================================
+
+const registrationForm =
+    document.getElementById("registrationForm");
+
+const registrationMessage =
+    document.getElementById("registrationMessage");
 
 
-document.addEventListener("DOMContentLoaded", function () {
+if (registrationForm) {
+
+    registrationForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+            const student = {
+
+                name:
+                    document.getElementById("name")?.value.trim() || "",
+
+                phone:
+                    document.getElementById("phone")?.value.trim() || "",
+
+                email:
+                    document.getElementById("email")?.value.trim() || "",
+
+                age:
+                    document.getElementById("age")?.value || "",
+
+                danceStyle:
+                    document.getElementById("danceStyle")?.value || "",
+
+                level:
+                    document.getElementById("level")?.value || "",
+
+                interest:
+                    document.getElementById("interest")?.value || "",
+
+                message:
+                    document.getElementById("message")?.value.trim() || ""
+
+            };
 
 
-    /* =========================================
-       JOIN FORM
-    ========================================= */
+            if (registrationMessage) {
 
-    const registrationForm =
-        document.getElementById("registrationForm");
+                registrationMessage.innerHTML =
+                    "Submitting registration...";
 
-    const formMessage =
-        document.getElementById("formMessage");
+            }
 
 
-    if (registrationForm) {
+            // Send registration to Supabase
 
-        registrationForm.addEventListener(
-            "submit",
-            async function (event) {
-
-                event.preventDefault();
-
-
-                /* =====================================
-                   GET FORM VALUES
-                ===================================== */
-
-                const student = {
-
-                    name:
-                        document
-                            .getElementById("name")
-                            .value
-                            .trim(),
-
-                    phone:
-                        document
-                            .getElementById("phone")
-                            .value
-                            .trim(),
-
-                    email:
-                        document
-                            .getElementById("email")
-                            .value
-                            .trim(),
-
-                    age:
-                        document
-                            .getElementById("age")
-                            .value,
-
-                    danceStyle:
-                        document
-                            .getElementById("danceStyle")
-                            .value,
-
-                    level:
-                        document
-                            .getElementById("level")
-                            .value,
-
-                    interest:
-                        document
-                            .getElementById("interest")
-                            .value,
-
-                    message:
-                        document
-                            .getElementById("message")
-                            .value
-                            .trim()
-
-                };
+            const { data, error } =
+                await supabaseClient
+                    .from("registrations")
+                    .insert([
+                        {
+                            name: student.name,
+                            phone: student.phone,
+                            email: student.email,
+                            age: student.age
+                                ? Number(student.age)
+                                : null,
+                            danceStyle: student.danceStyle,
+                            level: student.level,
+                            interest: student.interest,
+                            message: student.message
+                        }
+                    ]);
 
 
-                /* =====================================
-                   SHOW SUBMITTING MESSAGE
-                ===================================== */
+            if (error) {
 
-                formMessage.style.display = "block";
+                console.error(
+                    "Supabase registration error:",
+                    error
+                );
 
-                formMessage.innerHTML = `
-                    <p>
-                        Submitting your registration...
-                    </p>
-                `;
+                if (registrationMessage) {
 
-
-                /* =====================================
-                   SEND DATA TO SUPABASE
-                ===================================== */
-
-                const { data, error } =
-                    await supabaseClient
-                        .from("registrations")
-                        .insert([
-
-                            {
-
-                                name: student.name,
-
-                                phone: student.phone,
-
-                                email: student.email,
-
-                                age:
-                                    student.age
-                                    ? Number(student.age)
-                                    : null,
-
-                                danceStyle:
-                                    student.danceStyle,
-
-                                level:
-                                    student.level,
-
-                                interest:
-                                    student.interest,
-
-                                message:
-                                    student.message
-
-                            }
-
-                        ]);
-
-
-                /* =====================================
-                   HANDLE ERROR
-                ===================================== */
-
-                if (error) {
-
-                    console.error(
-                        "Supabase registration error:",
-                        error
-                    );
-
-
-                    formMessage.style.display = "block";
-
-                    formMessage.innerHTML = `
-                        <h3>
-                            Registration Failed ❌
-                        </h3>
-
-                        <p>
-                            Something went wrong.
-                            Please try again.
-                        </p>
-                    `;
-
-                    return;
+                    registrationMessage.innerHTML =
+                        "Registration Failed ❌<br>" +
+                        "Please try again.";
 
                 }
 
-
-                /* =====================================
-                   SUCCESS
-                ===================================== */
-
-                console.log(
-                    "Registration saved successfully:",
-                    data
-                );
-
-
-                formMessage.style.display = "block";
-
-                formMessage.innerHTML = `
-                    <h3>
-                        Registration Received! 🎉
-                    </h3>
-
-                    <p>
-                        Thank you,
-                        <strong>
-                            ${escapeHTML(student.name)}
-                        </strong>!
-                        Our Rasika team will contact you soon.
-                    </p>
-                `;
-
-
-                /* =====================================
-                   RESET FORM
-                ===================================== */
-
-                registrationForm.reset();
-
-
-                /* =====================================
-                   SCROLL TO MESSAGE
-                ===================================== */
-
-                formMessage.scrollIntoView({
-
-                    behavior: "smooth",
-
-                    block: "center"
-
-                });
-
+                return;
             }
-        );
-
-    }
 
 
-    /* =========================================
-       ADMIN DASHBOARD
-       TEMPORARILY STILL USING LOCALSTORAGE
-========================================= */
-
-    const registrationTableBody =
-        document.getElementById(
-            "registrationTableBody"
-        );
-
-    const studentCount =
-        document.getElementById(
-            "studentCount"
-        );
-
-    const searchStudent =
-        document.getElementById(
-            "searchStudent"
-        );
-
-
-    if (registrationTableBody) {
-
-        displayRegistrations();
-
-    }
-
-
-    if (searchStudent) {
-
-        searchStudent.addEventListener(
-            "input",
-            function () {
-
-                displayRegistrations(
-                    searchStudent.value
-                );
-
-            }
-        );
-
-    }
-
-
-    /* =========================================
-       DISPLAY REGISTRATIONS
-========================================= */
-
-    function displayRegistrations(
-        searchText = ""
-    ) {
-
-        const registrations =
-            JSON.parse(
-                localStorage.getItem(
-                    "rasikaRegistrations"
-                )
-            ) || [];
-
-
-        if (studentCount) {
-
-            studentCount.textContent =
-                registrations.length;
-
-        }
-
-
-        const search =
-            searchText
-                .toLowerCase()
-                .trim();
-
-
-        const filteredRegistrations =
-            registrations.filter(
-                function (student) {
-
-                    return (
-
-                        student.name
-                            .toLowerCase()
-                            .includes(search)
-
-                        ||
-
-                        student.email
-                            .toLowerCase()
-                            .includes(search)
-
-                        ||
-
-                        student.danceStyle
-                            .toLowerCase()
-                            .includes(search)
-
-                        ||
-
-                        student.level
-                            .toLowerCase()
-                            .includes(search)
-
-                    );
-
-                }
+            console.log(
+                "Registration saved:",
+                data
             );
 
 
-        if (
-            filteredRegistrations.length === 0
-        ) {
+            if (registrationMessage) {
 
-            registrationTableBody.innerHTML = `
-                <tr>
+                registrationMessage.innerHTML =
+                    "Registration Received! 🎉";
 
-                    <td colspan="8">
+            }
 
-                        <div class="empty-message">
 
-                            ${
-                                registrations.length === 0
-                                ? "No registrations yet."
-                                : "No matching registrations found."
-                            }
+            registrationForm.reset();
 
-                        </div>
 
-                    </td>
+            if (registrationMessage) {
 
-                </tr>
-            `;
+                registrationMessage.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
 
-            return;
+            }
 
         }
+    );
+
+}
 
 
-        registrationTableBody.innerHTML = "";
+// =====================================================
+// ADMIN DASHBOARD
+// =====================================================
+
+const registrationTableBody =
+    document.getElementById(
+        "registrationTableBody"
+    );
+
+const studentCount =
+    document.getElementById(
+        "studentCount"
+    );
+
+const searchStudent =
+    document.getElementById(
+        "searchStudent"
+    );
 
 
-        filteredRegistrations.forEach(
-            function (student) {
-
-                const row =
-                    document.createElement("tr");
+let registrations = [];
 
 
-                row.innerHTML = `
+// =====================================================
+// LOAD REGISTRATIONS FROM SUPABASE
+// =====================================================
+
+async function loadRegistrations() {
+
+    if (!registrationTableBody) {
+        return;
+    }
+
+
+    registrationTableBody.innerHTML = `
+        <tr>
+            <td colspan="8">
+                <div class="empty-message">
+                    Loading registrations...
+                </div>
+            </td>
+        </tr>
+    `;
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("registrations")
+        .select("*")
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Supabase admin error:",
+            error
+        );
+
+
+        registrationTableBody.innerHTML = `
+            <tr>
+                <td colspan="8">
+                    <div class="empty-message">
+                        Unable to load registrations.
+                    </div>
+                </td>
+            </tr>
+        `;
+
+        if (studentCount) {
+            studentCount.textContent = "0";
+        }
+
+        return;
+    }
+
+
+    registrations = data || [];
+
+
+    if (studentCount) {
+
+        studentCount.textContent =
+            registrations.length;
+
+    }
+
+
+    displayRegistrations(
+        registrations
+    );
+
+}
+
+
+// =====================================================
+// DISPLAY REGISTRATIONS
+// =====================================================
+
+function displayRegistrations(list) {
+
+    if (!registrationTableBody) {
+        return;
+    }
+
+
+    if (!list || list.length === 0) {
+
+        registrationTableBody.innerHTML = `
+            <tr>
+                <td colspan="8">
+                    <div class="empty-message">
+                        No registrations yet.
+                    </div>
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    registrationTableBody.innerHTML =
+        list.map(function (student) {
+
+            return `
+
+                <tr>
 
                     <td>
                         ${escapeHTML(student.name)}
@@ -391,7 +294,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </td>
 
                     <td>
-                        ${escapeHTML(student.age)}
+                        ${student.age ?? ""}
                     </td>
 
                     <td>
@@ -409,116 +312,174 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>
 
                         <button
-                            class="delete-btn"
-                            data-id="${student.id}"
+                            class="btn"
+                            onclick="deleteRegistration(${student.id})"
                         >
                             Delete
                         </button>
 
                     </td>
 
-                `;
+                </tr>
+
+            `;
+
+        }).join("");
+
+}
 
 
-                const deleteButton =
-                    row.querySelector(
-                        ".delete-btn"
-                    );
+// =====================================================
+// SEARCH
+// =====================================================
+
+if (searchStudent) {
+
+    searchStudent.addEventListener(
+        "input",
+        function () {
+
+            const search =
+                searchStudent.value
+                    .toLowerCase()
+                    .trim();
 
 
-                deleteButton.addEventListener(
-                    "click",
-                    function () {
+            if (!search) {
 
-                        deleteRegistration(
-                            student.id
+                displayRegistrations(
+                    registrations
+                );
+
+                return;
+
+            }
+
+
+            const filtered =
+                registrations.filter(
+                    function (student) {
+
+                        return (
+
+                            String(
+                                student.name || ""
+                            )
+                                .toLowerCase()
+                                .includes(search)
+
+                            ||
+
+                            String(
+                                student.email || ""
+                            )
+                                .toLowerCase()
+                                .includes(search)
+
+                            ||
+
+                            String(
+                                student.danceStyle || ""
+                            )
+                                .toLowerCase()
+                                .includes(search)
+
+                            ||
+
+                            String(
+                                student.level || ""
+                            )
+                                .toLowerCase()
+                                .includes(search)
+
                         );
 
                     }
                 );
 
 
-                registrationTableBody.appendChild(
-                    row
-                );
-
-            }
-        );
-
-    }
-
-
-    /* =========================================
-       ESCAPE HTML
-========================================= */
-
-    function escapeHTML(value) {
-
-        return String(value)
-
-            .replace(
-                /&/g,
-                "&amp;"
-            )
-
-            .replace(
-                /</g,
-                "&lt;"
-            )
-
-            .replace(
-                />/g,
-                "&gt;"
-            )
-
-            .replace(
-                /"/g,
-                "&quot;"
-            )
-
-            .replace(
-                /'/g,
-                "&#039;"
+            displayRegistrations(
+                filtered
             );
 
-    }
+        }
+    );
 
-});
-
-
-/* =========================================
-   DELETE REGISTRATION
-   TEMPORARY LOCALSTORAGE VERSION
-========================================= */
-
-function deleteRegistration(id) {
-
-    let registrations =
-        JSON.parse(
-            localStorage.getItem(
-                "rasikaRegistrations"
-            )
-        ) || [];
+}
 
 
-    registrations =
-        registrations.filter(
-            function (student) {
+// =====================================================
+// DELETE REGISTRATION
+// =====================================================
 
-                return student.id !== id;
+async function deleteRegistration(id) {
 
-            }
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this registration?"
         );
 
 
-    localStorage.setItem(
-        "rasikaRegistrations",
-        JSON.stringify(
-            registrations
-        )
-    );
+    if (!confirmed) {
+        return;
+    }
 
 
-    location.reload();
+    const {
+        error
+    } = await supabaseClient
+        .from("registrations")
+        .delete()
+        .eq("id", id);
+
+
+    if (error) {
+
+        console.error(
+            "Delete error:",
+            error
+        );
+
+        alert(
+            "Unable to delete registration."
+        );
+
+        return;
+    }
+
+
+    await loadRegistrations();
+
+}
+
+
+// =====================================================
+// SECURITY: ESCAPE HTML
+// =====================================================
+
+function escapeHTML(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+// =====================================================
+// START ADMIN DASHBOARD
+// =====================================================
+
+if (registrationTableBody) {
+
+    loadRegistrations();
 
 }
