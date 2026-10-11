@@ -11,7 +11,6 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_Rti6JVq-fdcBrbgJMVzk8A_tI4pe8ta";
 
-
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
@@ -38,6 +37,10 @@ if (registrationForm) {
 
             event.preventDefault();
 
+
+            // ---------------------------------------------
+            // GET FORM VALUES
+            // ---------------------------------------------
 
             const student = {
 
@@ -88,7 +91,9 @@ if (registrationForm) {
             };
 
 
-            // Show submitting message
+            // ---------------------------------------------
+            // SHOW SUBMITTING MESSAGE
+            // ---------------------------------------------
 
             if (registrationMessage) {
 
@@ -101,9 +106,9 @@ if (registrationForm) {
             }
 
 
-            // =================================================
-            // SEND REGISTRATION TO SUPABASE
-            // =================================================
+            // ---------------------------------------------
+            // SEND DATA TO SUPABASE
+            // ---------------------------------------------
 
             const {
                 data,
@@ -115,24 +120,29 @@ if (registrationForm) {
                         name: student.name,
                         phone: student.phone,
                         email: student.email,
+
                         age: student.age
                             ? Number(student.age)
                             : null,
+
                         danceStyle:
                             student.danceStyle,
+
                         level:
                             student.level,
+
                         interest:
                             student.interest,
+
                         message:
                             student.message
                     }
                 ]);
 
 
-            // =================================================
-            // ERROR
-            // =================================================
+            // ---------------------------------------------
+            // REGISTRATION ERROR
+            // ---------------------------------------------
 
             if (error) {
 
@@ -147,9 +157,15 @@ if (registrationForm) {
                     registrationMessage.style.display =
                         "block";
 
-                    registrationMessage.innerHTML =
-                        "Registration Failed ❌<br>" +
-                        "Please try again.";
+                    registrationMessage.innerHTML = `
+                        <h2>
+                            Registration Failed ❌
+                        </h2>
+
+                        <p>
+                            Please try again.
+                        </p>
+                    `;
 
                 }
 
@@ -157,9 +173,9 @@ if (registrationForm) {
             }
 
 
-            // =================================================
-            // SUCCESS
-            // =================================================
+            // ---------------------------------------------
+            // REGISTRATION SUCCESS
+            // ---------------------------------------------
 
             console.log(
                 "Registration saved successfully:",
@@ -167,26 +183,35 @@ if (registrationForm) {
             );
 
 
-            iif (registrationMessage) {
+            if (registrationMessage) {
 
-    registrationMessage.style.display = "block";
+                registrationMessage.style.display =
+                    "block";
 
-    registrationMessage.innerHTML = `
-        <h2>
-            Registration Received! 🎉
-        </h2>
+                registrationMessage.innerHTML = `
+                    <h2>
+                        Registration Received! 🎉
+                    </h2>
 
-        <p>
-            Thank you, ${escapeHTML(student.name)}!
-            Our Rasika team will contact you soon.
-        </p>
-    `;
+                    <p>
+                        Thank you, ${escapeHTML(student.name)}!
+                        Our Rasika team will contact you soon.
+                    </p>
+                `;
 
-}
+            }
 
+
+            // ---------------------------------------------
+            // CLEAR FORM
+            // ---------------------------------------------
 
             registrationForm.reset();
 
+
+            // ---------------------------------------------
+            // SCROLL TO SUCCESS MESSAGE
+            // ---------------------------------------------
 
             if (registrationMessage) {
 
@@ -262,6 +287,10 @@ async function loadRegistrations() {
         );
 
 
+    // ---------------------------------------------
+    // ADMIN LOAD ERROR
+    // ---------------------------------------------
+
     if (error) {
 
         console.error(
@@ -290,8 +319,16 @@ async function loadRegistrations() {
     }
 
 
+    // ---------------------------------------------
+    // SAVE REGISTRATIONS
+    // ---------------------------------------------
+
     registrations = data || [];
 
+
+    // ---------------------------------------------
+    // UPDATE STUDENT COUNT
+    // ---------------------------------------------
 
     if (studentCount) {
 
@@ -300,6 +337,10 @@ async function loadRegistrations() {
 
     }
 
+
+    // ---------------------------------------------
+    // DISPLAY REGISTRATIONS
+    // ---------------------------------------------
 
     displayRegistrations(
         registrations
@@ -319,6 +360,10 @@ function displayRegistrations(list) {
     }
 
 
+    // ---------------------------------------------
+    // NO REGISTRATIONS
+    // ---------------------------------------------
+
     if (!list || list.length === 0) {
 
         registrationTableBody.innerHTML = `
@@ -334,6 +379,10 @@ function displayRegistrations(list) {
         return;
     }
 
+
+    // ---------------------------------------------
+    // CREATE TABLE ROWS
+    // ---------------------------------------------
 
     registrationTableBody.innerHTML =
         list.map(function (student) {
@@ -391,7 +440,7 @@ function displayRegistrations(list) {
 
 
 // =====================================================
-// SEARCH
+// SEARCH STUDENTS
 // =====================================================
 
 if (searchStudent) {
@@ -406,6 +455,10 @@ if (searchStudent) {
                     .trim();
 
 
+            // -----------------------------------------
+            // SHOW ALL
+            // -----------------------------------------
+
             if (!search) {
 
                 displayRegistrations(
@@ -416,6 +469,10 @@ if (searchStudent) {
 
             }
 
+
+            // -----------------------------------------
+            // FILTER
+            // -----------------------------------------
 
             const filtered =
                 registrations.filter(
@@ -494,6 +551,10 @@ async function deleteRegistration(id) {
         .eq("id", id);
 
 
+    // ---------------------------------------------
+    // DELETE ERROR
+    // ---------------------------------------------
+
     if (error) {
 
         console.error(
@@ -511,6 +572,10 @@ async function deleteRegistration(id) {
     }
 
 
+    // ---------------------------------------------
+    // RELOAD TABLE
+    // ---------------------------------------------
+
     await loadRegistrations();
 
 }
@@ -526,7 +591,9 @@ function escapeHTML(value) {
         value === null ||
         value === undefined
     ) {
+
         return "";
+
     }
 
 
