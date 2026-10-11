@@ -5,9 +5,12 @@ console.log("RASIKA JS LOADED");
 // SUPABASE CONFIGURATION
 // =====================================================
 
-const SUPABASE_URL = "https://piutbtmxswsvbdmviaxa.supabase.co";
+const SUPABASE_URL =
+    "https://piutbtmxswsvbdmviaxa.supabase.co";
 
-const SUPABASE_KEY = "sb_publishable_Rti6JVq-fdcBrbgJMVzk8A_tI4pe8ta";
+const SUPABASE_KEY =
+    "sb_publishable_Rti6JVq-fdcBrbgJMVzk8A_tI4pe8ta";
+
 
 const supabaseClient =
     window.supabase.createClient(
@@ -24,7 +27,7 @@ const registrationForm =
     document.getElementById("registrationForm");
 
 const registrationMessage =
-    document.getElementById("registrationMessage");
+    document.getElementById("formMessage");
 
 
 if (registrationForm) {
@@ -35,36 +38,62 @@ if (registrationForm) {
 
             event.preventDefault();
 
+
             const student = {
 
                 name:
-                    document.getElementById("name")?.value.trim() || "",
+                    document
+                        .getElementById("name")
+                        ?.value
+                        .trim() || "",
 
                 phone:
-                    document.getElementById("phone")?.value.trim() || "",
+                    document
+                        .getElementById("phone")
+                        ?.value
+                        .trim() || "",
 
                 email:
-                    document.getElementById("email")?.value.trim() || "",
+                    document
+                        .getElementById("email")
+                        ?.value
+                        .trim() || "",
 
                 age:
-                    document.getElementById("age")?.value || "",
+                    document
+                        .getElementById("age")
+                        ?.value || "",
 
                 danceStyle:
-                    document.getElementById("danceStyle")?.value || "",
+                    document
+                        .getElementById("danceStyle")
+                        ?.value || "",
 
                 level:
-                    document.getElementById("level")?.value || "",
+                    document
+                        .getElementById("level")
+                        ?.value || "",
 
                 interest:
-                    document.getElementById("interest")?.value || "",
+                    document
+                        .getElementById("interest")
+                        ?.value || "",
 
                 message:
-                    document.getElementById("message")?.value.trim() || ""
+                    document
+                        .getElementById("message")
+                        ?.value
+                        .trim() || ""
 
             };
 
 
+            // Show submitting message
+
             if (registrationMessage) {
+
+                registrationMessage.style.display =
+                    "block";
 
                 registrationMessage.innerHTML =
                     "Submitting registration...";
@@ -72,26 +101,38 @@ if (registrationForm) {
             }
 
 
-            // Send registration to Supabase
+            // =================================================
+            // SEND REGISTRATION TO SUPABASE
+            // =================================================
 
-            const { data, error } =
-                await supabaseClient
-                    .from("registrations")
-                    .insert([
-                        {
-                            name: student.name,
-                            phone: student.phone,
-                            email: student.email,
-                            age: student.age
-                                ? Number(student.age)
-                                : null,
-                            danceStyle: student.danceStyle,
-                            level: student.level,
-                            interest: student.interest,
-                            message: student.message
-                        }
-                    ]);
+            const {
+                data,
+                error
+            } = await supabaseClient
+                .from("registrations")
+                .insert([
+                    {
+                        name: student.name,
+                        phone: student.phone,
+                        email: student.email,
+                        age: student.age
+                            ? Number(student.age)
+                            : null,
+                        danceStyle:
+                            student.danceStyle,
+                        level:
+                            student.level,
+                        interest:
+                            student.interest,
+                        message:
+                            student.message
+                    }
+                ]);
 
+
+            // =================================================
+            // ERROR
+            // =================================================
 
             if (error) {
 
@@ -100,7 +141,11 @@ if (registrationForm) {
                     error
                 );
 
+
                 if (registrationMessage) {
+
+                    registrationMessage.style.display =
+                        "block";
 
                     registrationMessage.innerHTML =
                         "Registration Failed ❌<br>" +
@@ -112,13 +157,20 @@ if (registrationForm) {
             }
 
 
+            // =================================================
+            // SUCCESS
+            // =================================================
+
             console.log(
-                "Registration saved:",
+                "Registration saved successfully:",
                 data
             );
 
 
             if (registrationMessage) {
+
+                registrationMessage.style.display =
+                    "block";
 
                 registrationMessage.innerHTML =
                     "Registration Received! 🎉";
@@ -221,9 +273,11 @@ async function loadRegistrations() {
             </tr>
         `;
 
+
         if (studentCount) {
             studentCount.textContent = "0";
         }
+
 
         return;
     }
@@ -440,9 +494,11 @@ async function deleteRegistration(id) {
             error
         );
 
+
         alert(
             "Unable to delete registration."
         );
+
 
         return;
     }
@@ -454,12 +510,15 @@ async function deleteRegistration(id) {
 
 
 // =====================================================
-// SECURITY: ESCAPE HTML
+// ESCAPE HTML
 // =====================================================
 
 function escapeHTML(value) {
 
-    if (value === null || value === undefined) {
+    if (
+        value === null ||
+        value === undefined
+    ) {
         return "";
     }
 
