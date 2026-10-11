@@ -167,15 +167,22 @@ if (registrationForm) {
             );
 
 
-            if (registrationMessage) {
+            iif (registrationMessage) {
 
-                registrationMessage.style.display =
-                    "block";
+    registrationMessage.style.display = "block";
 
-                registrationMessage.innerHTML =
-                    "Registration Received! 🎉";
+    registrationMessage.innerHTML = `
+        <h2>
+            Registration Received! 🎉
+        </h2>
 
-            }
+        <p>
+            Thank you, ${escapeHTML(student.name)}!
+            Our Rasika team will contact you soon.
+        </p>
+    `;
+
+}
 
 
             registrationForm.reset();
