@@ -16,384 +16,359 @@
 
 <body>
 
+    <!-- =========================================
+         NAVIGATION
+    ========================================== -->
 
-<header class="navbar">
+    <header class="navbar">
 
-    <a href="index.html" class="logo">
-        RASIKA
-    </a>
-
-    <nav>
-
-        <a href="index.html">Home</a>
-
-        <a href="pages/story.html">Our Story</a>
-
-        <a href="pages/learn.html">Learn</a>
-
-        <a href="pages/workshops.html">Workshops</a>
-
-        <a href="pages/stage.html">Stage</a>
-
-        <a href="pages/contests.html">Contests</a>
-
-        <a href="join.html">Join</a>
-
-    </nav>
-
-</header>
-
-
-<section class="page-hero">
-
-    <div class="page-hero-content">
-
-        <div class="eyebrow">
-            BEGIN YOUR JOURNEY
+        <div class="logo">
+            Rasika
         </div>
 
-        <h1>
-            Join Rasika.
-        </h1>
+        <nav>
 
-        <p>
-            Tell us a little about yourself and
-            let's find the right dance experience for you.
-        </p>
+            <a href="index.html">Home</a>
 
-    </div>
+            <a href="pages/story.html">Our Story</a>
 
-</section>
+            <a href="pages/learn.html">Learn</a>
 
+            <a href="pages/workshops.html">Workshops</a>
 
-<section class="page-section">
+            <a href="pages/stage.html">Stage</a>
 
-    <div class="section-heading">
+            <a href="pages/contests.html">Contests</a>
 
-        <h2>
-            Let's Dance Together.
-        </h2>
+            <a href="join.html" class="active">Join</a>
 
-        <p>
-            Fill in the form below and our team
-            will get in touch with you.
-        </p>
+        </nav>
 
-    </div>
+    </header>
 
 
-    <div class="form-container">
+    <!-- =========================================
+         JOIN SECTION
+    ========================================== -->
 
-        <form id="registrationForm">
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <p class="eyebrow">
+                    BEGIN YOUR JOURNEY
+                </p>
+
+                <h1>
+                    Join Rasika
+                </h1>
+
+                <p>
+                    Step into a space where movement becomes
+                    expression, confidence and connection.
+                </p>
+
+            </div>
+
+        </section>
 
 
-            <div class="form-group">
+        <!-- =====================================
+             REGISTRATION FORM
+        ====================================== -->
 
-                <label for="name">
-                    Full Name
-                </label>
+        <section class="section">
 
-                <input
-                    type="text"
-                    id="name"
-                    placeholder="Enter your full name"
-                    required
-                >
+            <div class="section-heading">
+
+                <p class="eyebrow">
+                    REGISTRATION
+                </p>
+
+                <h2>
+                    Tell Us About You
+                </h2>
+
+                <p>
+                    Fill in your details and our Rasika team
+                    will get in touch with you.
+                </p>
 
             </div>
 
 
-            <div class="form-group">
+            <div class="form-container">
 
-                <label for="phone">
-                    Phone Number
-                </label>
+                <form id="registrationForm">
 
-                <input
-                    type="tel"
-                    id="phone"
-                    placeholder="Enter your phone number"
-                    required
-                >
+
+                    <!-- NAME -->
+
+                    <div class="form-group">
+
+                        <label for="name">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Enter your full name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="form-group">
+
+                        <label for="phone">
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            placeholder="Enter your phone number"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- AGE -->
+
+                    <div class="form-group">
+
+                        <label for="age">
+                            Age
+                        </label>
+
+                        <input
+                            type="number"
+                            id="age"
+                            name="age"
+                            placeholder="Enter your age"
+                            min="5"
+                            max="100"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- DANCE STYLE -->
+
+                    <div class="form-group">
+
+                        <label for="danceStyle">
+                            Dance Style
+                        </label>
+
+                        <select
+                            id="danceStyle"
+                            name="danceStyle"
+                            required
+                        >
+
+                            <option value="">
+                                Select a dance style
+                            </option>
+
+                            <option value="Classical">
+                                Classical
+                            </option>
+
+                            <option value="Contemporary">
+                                Contemporary
+                            </option>
+
+                            <option value="Bollywood">
+                                Bollywood
+                            </option>
+
+                            <option value="Hip-Hop">
+                                Hip-Hop
+                            </option>
+
+                            <option value="Western">
+                                Western
+                            </option>
+
+                            <option value="Folk & Traditional">
+                                Folk & Traditional
+                            </option>
+
+                            <option value="Fusion">
+                                Fusion
+                            </option>
+
+                            <option value="Semi-Classical">
+                                Semi-Classical
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- LEVEL -->
+
+                    <div class="form-group">
+
+                        <label for="level">
+                            Dance Level
+                        </label>
+
+                        <select
+                            id="level"
+                            name="level"
+                            required
+                        >
+
+                            <option value="">
+                                Select your level
+                            </option>
+
+                            <option value="Beginner">
+                                Beginner
+                            </option>
+
+                            <option value="Intermediate">
+                                Intermediate
+                            </option>
+
+                            <option value="Advanced">
+                                Advanced
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- INTEREST -->
+
+                    <div class="form-group">
+
+                        <label for="interest">
+                            What are you interested in?
+                        </label>
+
+                        <select
+                            id="interest"
+                            name="interest"
+                            required
+                        >
+
+                            <option value="">
+                                Select an option
+                            </option>
+
+                            <option value="Regular Classes">
+                                Regular Classes
+                            </option>
+
+                            <option value="Workshops">
+                                Workshops
+                            </option>
+
+                            <option value="Stage Performances">
+                                Stage Performances
+                            </option>
+
+                            <option value="Competitions">
+                                Competitions
+                            </option>
+
+                            <option value="All">
+                                All of the Above
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- MESSAGE -->
+
+                    <div class="form-group">
+
+                        <label for="message">
+                            Message
+                        </label>
+
+                        <textarea
+                            id="message"
+                            name="message"
+                            rows="5"
+                            placeholder="Tell us anything you'd like us to know..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- SUBMIT -->
+
+                    <button
+                        type="submit"
+                        class="btn"
+                    >
+                        Submit Registration →
+                    </button>
+
+                </form>
+
+
+                <!-- SUCCESS / ERROR MESSAGE -->
+
+                <div
+                    id="formMessage"
+                    class="form-message"
+                    style="display: none;"
+                ></div>
 
             </div>
 
+        </section>
 
-            <div class="form-group">
+    </main>
 
-                <label for="email">
-                    Email Address
-                </label>
 
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="Enter your email"
-                    required
-                >
+    <!-- =========================================
+         SCRIPTS
+    ========================================== -->
 
-            </div>
+    <!-- Supabase JavaScript library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
-            <div class="form-group">
-
-                <label for="age">
-                    Age
-                </label>
-
-                <input
-                    type="number"
-                    id="age"
-                    min="5"
-                    max="80"
-                    placeholder="Your age"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="danceStyle">
-                    Dance Style
-                </label>
-
-                <select id="danceStyle" required>
-
-                    <option value="">
-                        Select a dance style
-                    </option>
-
-                    <option value="Classical">
-                        Classical
-                    </option>
-
-                    <option value="Contemporary">
-                        Contemporary
-                    </option>
-
-                    <option value="Bollywood">
-                        Bollywood
-                    </option>
-
-                    <option value="Hip-Hop">
-                        Hip-Hop
-                    </option>
-
-                    <option value="Western">
-                        Western
-                    </option>
-
-                    <option value="Folk">
-                        Folk
-                    </option>
-
-                    <option value="Fusion">
-                        Fusion
-                    </option>
-
-                    <option value="Other">
-                        Other
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="level">
-                    Experience Level
-                </label>
-
-                <select id="level" required>
-
-                    <option value="">
-                        Select your level
-                    </option>
-
-                    <option value="Beginner">
-                        Beginner
-                    </option>
-
-                    <option value="Intermediate">
-                        Intermediate
-                    </option>
-
-                    <option value="Advanced">
-                        Advanced
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="interest">
-                    I'm Interested In
-                </label>
-
-                <select id="interest" required>
-
-                    <option value="">
-                        Select an option
-                    </option>
-
-                    <option value="Dance Classes">
-                        Dance Classes
-                    </option>
-
-                    <option value="Workshops">
-                        Workshops
-                    </option>
-
-                    <option value="Stage">
-                        Stage Performances
-                    </option>
-
-                    <option value="Competitions">
-                        Competitions
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="message">
-                    Tell Us More
-                </label>
-
-                <textarea
-                    id="message"
-                    placeholder="Tell us about your dance experience, goals or anything you'd like us to know..."
-                ></textarea>
-
-            </div>
-
-
-            <button
-                type="submit"
-                class="submit-button"
-            >
-                Submit Registration
-            </button>
-
-        </form>
-
-
-        <div
-            id="formMessage"
-            class="form-message"
-        >
-
-            <h3>
-                Registration Received! 🎉
-            </h3>
-
-            <p>
-                Thank you for choosing Rasika.
-                Our team will contact you soon.
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<section class="page-section">
-
-    <div class="section-heading">
-
-        <h2>
-            What Happens Next?
-        </h2>
-
-        <p>
-            Your journey with Rasika is simple.
-        </p>
-
-    </div>
-
-
-    <div class="cards">
-
-        <div class="card">
-
-            <div class="card-number">
-                01
-            </div>
-
-            <h3>
-                Submit
-            </h3>
-
-            <p>
-                Tell us about yourself and
-                your dance interests.
-            </p>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="card-number">
-                02
-            </div>
-
-            <h3>
-                Connect
-            </h3>
-
-            <p>
-                Our team will contact you and
-                understand what you're looking for.
-            </p>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="card-number">
-                03
-            </div>
-
-            <h3>
-                Begin
-            </h3>
-
-            <p>
-                Choose your class, workshop,
-                performance or competition.
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<footer>
-
-    <p>
-        © 2026 Rasika · Where Dance Becomes Expression
-    </p>
-
-</footer>
-
-
-<script src="rasika.js"></script>
+    <!-- Your Rasika JavaScript -->
+    <script src="rasika.js"></script>
 
 </body>
 
