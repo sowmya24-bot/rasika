@@ -1,6 +1,26 @@
+const SUPABASE_URL =
+    "https://piutbtmxswsvbdmviaxa.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_Rti6JVq-fdcBrbgJMVzk8A_tI4pe8ta";
+
+
+/* =========================================
+   SUPABASE CONNECTION
+========================================= */
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
 console.log("RASIKA JS LOADED");
 
+
 document.addEventListener("DOMContentLoaded", function () {
+
 
     /* =========================================
        JOIN FORM
@@ -15,94 +35,219 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (registrationForm) {
 
-        registrationForm.addEventListener("submit", function (event) {
+        registrationForm.addEventListener(
+            "submit",
+            async function (event) {
 
-            event.preventDefault();
-
-            const student = {
-
-                id: Date.now(),
-
-                name:
-                    document.getElementById("name").value.trim(),
-
-                phone:
-                    document.getElementById("phone").value.trim(),
-
-                email:
-                    document.getElementById("email").value.trim(),
-
-                age:
-                    document.getElementById("age").value,
-
-                danceStyle:
-                    document.getElementById("danceStyle").value,
-
-                level:
-                    document.getElementById("level").value,
-
-                interest:
-                    document.getElementById("interest").value,
-
-                message:
-                    document.getElementById("message").value.trim()
-
-            };
+                event.preventDefault();
 
 
-            let registrations =
-                JSON.parse(
-                    localStorage.getItem("rasikaRegistrations")
-                ) || [];
+                /* =====================================
+                   GET FORM VALUES
+                ===================================== */
+
+                const student = {
+
+                    name:
+                        document
+                            .getElementById("name")
+                            .value
+                            .trim(),
+
+                    phone:
+                        document
+                            .getElementById("phone")
+                            .value
+                            .trim(),
+
+                    email:
+                        document
+                            .getElementById("email")
+                            .value
+                            .trim(),
+
+                    age:
+                        document
+                            .getElementById("age")
+                            .value,
+
+                    danceStyle:
+                        document
+                            .getElementById("danceStyle")
+                            .value,
+
+                    level:
+                        document
+                            .getElementById("level")
+                            .value,
+
+                    interest:
+                        document
+                            .getElementById("interest")
+                            .value,
+
+                    message:
+                        document
+                            .getElementById("message")
+                            .value
+                            .trim()
+
+                };
 
 
-            registrations.push(student);
+                /* =====================================
+                   SHOW SUBMITTING MESSAGE
+                ===================================== */
+
+                formMessage.style.display = "block";
+
+                formMessage.innerHTML = `
+                    <p>
+                        Submitting your registration...
+                    </p>
+                `;
 
 
-            localStorage.setItem(
-                "rasikaRegistrations",
-                JSON.stringify(registrations)
-            );
+                /* =====================================
+                   SEND DATA TO SUPABASE
+                ===================================== */
+
+                const { data, error } =
+                    await supabaseClient
+                        .from("registrations")
+                        .insert([
+
+                            {
+
+                                name: student.name,
+
+                                phone: student.phone,
+
+                                email: student.email,
+
+                                age:
+                                    student.age
+                                    ? Number(student.age)
+                                    : null,
+
+                                danceStyle:
+                                    student.danceStyle,
+
+                                level:
+                                    student.level,
+
+                                interest:
+                                    student.interest,
+
+                                message:
+                                    student.message
+
+                            }
+
+                        ]);
 
 
-            formMessage.style.display = "block";
+                /* =====================================
+                   HANDLE ERROR
+                ===================================== */
 
-            formMessage.innerHTML = `
-                <h3>Registration Received! 🎉</h3>
+                if (error) {
 
-                <p>
-                    Thank you,
-                    <strong>${escapeHTML(student.name)}</strong>!
-                    Our Rasika team will contact you soon.
-                </p>
-            `;
-
-
-            registrationForm.reset();
+                    console.error(
+                        "Supabase registration error:",
+                        error
+                    );
 
 
-            formMessage.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
+                    formMessage.style.display = "block";
 
-        });
+                    formMessage.innerHTML = `
+                        <h3>
+                            Registration Failed ❌
+                        </h3>
+
+                        <p>
+                            Something went wrong.
+                            Please try again.
+                        </p>
+                    `;
+
+                    return;
+
+                }
+
+
+                /* =====================================
+                   SUCCESS
+                ===================================== */
+
+                console.log(
+                    "Registration saved successfully:",
+                    data
+                );
+
+
+                formMessage.style.display = "block";
+
+                formMessage.innerHTML = `
+                    <h3>
+                        Registration Received! 🎉
+                    </h3>
+
+                    <p>
+                        Thank you,
+                        <strong>
+                            ${escapeHTML(student.name)}
+                        </strong>!
+                        Our Rasika team will contact you soon.
+                    </p>
+                `;
+
+
+                /* =====================================
+                   RESET FORM
+                ===================================== */
+
+                registrationForm.reset();
+
+
+                /* =====================================
+                   SCROLL TO MESSAGE
+                ===================================== */
+
+                formMessage.scrollIntoView({
+
+                    behavior: "smooth",
+
+                    block: "center"
+
+                });
+
+            }
+        );
 
     }
 
 
     /* =========================================
        ADMIN DASHBOARD
-    ========================================= */
+       TEMPORARILY STILL USING LOCALSTORAGE
+========================================= */
 
     const registrationTableBody =
-        document.getElementById("registrationTableBody");
+        document.getElementById(
+            "registrationTableBody"
+        );
 
     const studentCount =
-        document.getElementById("studentCount");
+        document.getElementById(
+            "studentCount"
+        );
 
     const searchStudent =
-        document.getElementById("searchStudent");
+        document.getElementById(
+            "searchStudent"
+        );
 
 
     if (registrationTableBody) {
@@ -130,13 +275,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================
        DISPLAY REGISTRATIONS
-    ========================================= */
+========================================= */
 
-    function displayRegistrations(searchText = "") {
+    function displayRegistrations(
+        searchText = ""
+    ) {
 
         const registrations =
             JSON.parse(
-                localStorage.getItem("rasikaRegistrations")
+                localStorage.getItem(
+                    "rasikaRegistrations"
+                )
             ) || [];
 
 
@@ -149,42 +298,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         const search =
-            searchText.toLowerCase().trim();
+            searchText
+                .toLowerCase()
+                .trim();
 
 
         const filteredRegistrations =
-            registrations.filter(function (student) {
+            registrations.filter(
+                function (student) {
 
-                return (
+                    return (
 
-                    student.name
-                        .toLowerCase()
-                        .includes(search)
+                        student.name
+                            .toLowerCase()
+                            .includes(search)
 
-                    ||
+                        ||
 
-                    student.email
-                        .toLowerCase()
-                        .includes(search)
+                        student.email
+                            .toLowerCase()
+                            .includes(search)
 
-                    ||
+                        ||
 
-                    student.danceStyle
-                        .toLowerCase()
-                        .includes(search)
+                        student.danceStyle
+                            .toLowerCase()
+                            .includes(search)
 
-                    ||
+                        ||
 
-                    student.level
-                        .toLowerCase()
-                        .includes(search)
+                        student.level
+                            .toLowerCase()
+                            .includes(search)
 
-                );
+                    );
 
-            });
+                }
+            );
 
 
-        if (filteredRegistrations.length === 0) {
+        if (
+            filteredRegistrations.length === 0
+        ) {
 
             registrationTableBody.innerHTML = `
                 <tr>
@@ -214,89 +369,117 @@ document.addEventListener("DOMContentLoaded", function () {
         registrationTableBody.innerHTML = "";
 
 
-        filteredRegistrations.forEach(function (student) {
+        filteredRegistrations.forEach(
+            function (student) {
 
-            const row =
-                document.createElement("tr");
-
-
-            row.innerHTML = `
-
-                <td>
-                    ${escapeHTML(student.name)}
-                </td>
-
-                <td>
-                    ${escapeHTML(student.phone)}
-                </td>
-
-                <td>
-                    ${escapeHTML(student.email)}
-                </td>
-
-                <td>
-                    ${escapeHTML(student.age)}
-                </td>
-
-                <td>
-                    ${escapeHTML(student.danceStyle)}
-                </td>
-
-                <td>
-                    ${escapeHTML(student.level)}
-                </td>
-
-                <td>
-                    ${escapeHTML(student.interest)}
-                </td>
-
-                <td>
-
-                    <button
-                        class="delete-btn"
-                        data-id="${student.id}"
-                    >
-                        Delete
-                    </button>
-
-                </td>
-
-            `;
+                const row =
+                    document.createElement("tr");
 
 
-            const deleteButton =
-                row.querySelector(".delete-btn");
+                row.innerHTML = `
+
+                    <td>
+                        ${escapeHTML(student.name)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(student.phone)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(student.email)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(student.age)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(student.danceStyle)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(student.level)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(student.interest)}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="delete-btn"
+                            data-id="${student.id}"
+                        >
+                            Delete
+                        </button>
+
+                    </td>
+
+                `;
 
 
-            deleteButton.addEventListener(
-                "click",
-                function () {
-
-                    deleteRegistration(student.id);
-
-                }
-            );
+                const deleteButton =
+                    row.querySelector(
+                        ".delete-btn"
+                    );
 
 
-            registrationTableBody.appendChild(row);
+                deleteButton.addEventListener(
+                    "click",
+                    function () {
 
-        });
+                        deleteRegistration(
+                            student.id
+                        );
+
+                    }
+                );
+
+
+                registrationTableBody.appendChild(
+                    row
+                );
+
+            }
+        );
 
     }
 
 
     /* =========================================
        ESCAPE HTML
-    ========================================= */
+========================================= */
 
     function escapeHTML(value) {
 
         return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+
+            .replace(
+                /</g,
+                "&lt;"
+            )
+
+            .replace(
+                />/g,
+                "&gt;"
+            )
+
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+
+            .replace(
+                /'/g,
+                "&#039;"
+            );
 
     }
 
@@ -305,27 +488,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /* =========================================
    DELETE REGISTRATION
+   TEMPORARY LOCALSTORAGE VERSION
 ========================================= */
 
 function deleteRegistration(id) {
 
     let registrations =
         JSON.parse(
-            localStorage.getItem("rasikaRegistrations")
+            localStorage.getItem(
+                "rasikaRegistrations"
+            )
         ) || [];
 
 
     registrations =
-        registrations.filter(function (student) {
+        registrations.filter(
+            function (student) {
 
-            return student.id !== id;
+                return student.id !== id;
 
-        });
+            }
+        );
 
 
     localStorage.setItem(
         "rasikaRegistrations",
-        JSON.stringify(registrations)
+        JSON.stringify(
+            registrations
+        )
     );
 
 
